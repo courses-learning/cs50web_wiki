@@ -9,8 +9,18 @@
 
     <ul>
         {% for entry in entries %}
-            <li>{{ entry }}</li>
+            <li><a href="{% url 'index' %}wiki/{{ entry }}">{{ entry }}</a></li>
         {% endfor %}
     </ul>
 
 {% endblock %}
+
+
+
+<form action="{% url 'tasks:add' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Add">
+    </form>
+
+    <a href="{% url 'tasks:index' %}">Home</a>
