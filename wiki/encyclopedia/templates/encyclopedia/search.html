@@ -5,11 +5,14 @@
 {% endblock %}
 
 {% block body %}
-    <h1>All Pages</h1>
+
+    <h1>Search Results</h1>
 
     <ul>
-        {% for entry in entries %}
+        {% for entry in partial_matches %}
             <li><a href="{% url 'index' %}wiki/{{ entry }}">{{ entry }}</a></li>
+        {% empty %}
+            <li>Sorry no entries match your Search</li>
         {% endfor %}
     </ul>
 
