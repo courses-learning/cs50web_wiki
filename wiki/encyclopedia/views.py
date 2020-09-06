@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django import forms
 
+from random import randrange
+
 from . import util
 
 
@@ -75,3 +77,10 @@ def new(request):
         return render(request, "encyclopedia/new.html", {
             "form": NewEntryForm()
         })
+
+
+def random(request):
+    all_titles = util.list_entries()
+    rand_title = all_titles[randrange(len(all_titles))]
+    return redirect('wiki', rand_title)
+
