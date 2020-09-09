@@ -14,6 +14,10 @@ class NewEntryForm(forms.Form):
     markup = forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":20}), label="")
 
 
+class EditEntryForm(forms.Form):
+    markup = forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":20}), label="")
+
+
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
@@ -84,3 +88,19 @@ def random(request):
     rand_title = all_titles[randrange(len(all_titles))]
     return redirect('wiki', rand_title)
 
+
+def edit(request, title):
+    if request.method == "POST":
+        form = EditEntryForm(request.POST)
+        if form.is_valid():
+            markup = form.cleaned_data["markup"]
+            util.save_entry(title, markup)
+            return redirect('wiki', title)
+        else:
+            return HttpResponse("<h1>Something went wrong - Invalid data submitted</h1>") 
+    else:
+        return render(request, "encyclopedia/edit.html", {
+            "title": title,
+            "form": EditEntryForm({'markup': util.get_entry(title)})
+        })
+    
