@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django import forms
 
+import markdown2
+
 from random import randrange
 
 from . import util
@@ -28,7 +30,7 @@ def wiki(request, title):
     if title.lower() in map(lambda x:x.lower(), util.list_entries()):
         return render(request, "encyclopedia/wiki.html", {
             "title": title,
-            "entry": util.get_entry(title)
+            "entry": markdown2.markdown(util.get_entry(title))
         })
     else:
         return HttpResponse("<h1>Page not yet created</h1>") 
